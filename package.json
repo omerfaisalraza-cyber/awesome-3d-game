@@ -1,0 +1,29 @@
+{
+  "name": "awesome-3d-game",
+  "version": "1.0.0",
+  "description": "Complete 3D game development with Three.js, assets, and tools",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^r128",
+    "cannon-es": "^0.20.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0"
+  },
+  "keywords": [
+    "3d",
+    "game",
+    "three.js",
+    "babylon.js",
+    "webgl",
+    "gamedev"
+  ],
+  "author": "omerfaisalraza-cyber",
+  "license": "MIT"
+}
