@@ -9,6 +9,7 @@ const Mainframe: React.FC = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [hamburgerRotate, setHamburgerRotate] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState(false);
   const prevXRef = useRef<number>(0);
   const targetTimeRef = useRef<number>(0);
 
@@ -18,7 +19,6 @@ const Mainframe: React.FC = () => {
     startDelay: 600,
   });
 
-  // Show action buttons after 400ms
   useEffect(() => {
     const timer = setTimeout(() => setShowButtons(true), 400);
     return () => clearTimeout(timer);
@@ -27,6 +27,11 @@ const Mainframe: React.FC = () => {
   const toggleNav = () => {
     setNavOpen(!navOpen);
     setHamburgerRotate(!hamburgerRotate);
+  };
+
+  const handleNavLinkClick = () => {
+    setNavOpen(false);
+    setHamburgerRotate(false);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -71,6 +76,8 @@ const Mainframe: React.FC = () => {
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('hello@mainframe.co');
+    setCopyFeedback(true);
+    setTimeout(() => setCopyFeedback(false), 2000);
   };
 
   return (
@@ -81,7 +88,6 @@ const Mainframe: React.FC = () => {
         fontFamily: "var(--font-body)",
       } as React.CSSProperties}
     >
-      {/* Background Video */}
       <video
         ref={videoRef}
         muted
@@ -91,57 +97,60 @@ const Mainframe: React.FC = () => {
         style={{
           objectPosition: '70% center',
         }}
+        aria-hidden="true"
       >
         <source src={VIDEO_URL} type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
 
-      {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5">
-        {/* Logo */}
+      <nav className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5" role="navigation">
         <div className="flex items-center gap-3">
           <span
             className="text-xl sm:text-2xl tracking-tight text-black font-medium"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            Mainframe(R)
+            Mainframe<span className="text-lg">®</span>
           </span>
           <span
             className="text-2xl sm:text-3xl text-black select-none"
             style={{ letterSpacing: '-0.02em' }}
+            aria-hidden="true"
           >
             ✳︎
           </span>
         </div>
 
-        {/* Desktop Nav Links */}
         <div className="hidden md:flex items-center gap-1 text-2xl text-black">
-          <a href="#" className="hover:opacity-60 transition-opacity">
+          <a href="#" className="hover:opacity-60 transition-opacity focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1">
             Labs
           </a>
-          <span>, </span>
-          <a href="#" className="hover:opacity-60 transition-opacity">
+          <span aria-hidden="true">, </span>
+          <a href="#" className="hover:opacity-60 transition-opacity focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1">
             Studio
           </a>
-          <span>, </span>
-          <a href="#" className="hover:opacity-60 transition-opacity">
+          <span aria-hidden="true">, </span>
+          <a href="#" className="hover:opacity-60 transition-opacity focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1">
             Openings
           </a>
-          <span>, </span>
-          <a href="#" className="hover:opacity-60 transition-opacity">
+          <span aria-hidden="true">, </span>
+          <a href="#" className="hover:opacity-60 transition-opacity focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1">
             Shop
           </a>
         </div>
 
-        {/* Desktop CTA */}
         <a
           href="#"
-          className="hidden md:block text-2xl text-black underline underline-offset-2 hover:opacity-60 transition-opacity"
+          className="hidden md:block text-2xl text-black underline underline-offset-2 hover:opacity-60 transition-opacity focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1"
         >
           Get in touch
         </a>
 
-        {/* Mobile Hamburger */}
-        <button className="md:hidden flex flex-col gap-[5px]" onClick={toggleNav}>
+        <button
+          className="md:hidden flex flex-col gap-[5px] focus:outline-none focus:ring-2 focus:ring-black rounded p-2"
+          onClick={toggleNav}
+          aria-label="Toggle navigation menu"
+          aria-expanded={navOpen}
+        >
           <div
             className="w-6 h-[2px] bg-black transition-all duration-300"
             style={{
@@ -163,37 +172,36 @@ const Mainframe: React.FC = () => {
         </button>
       </nav>
 
-      {/* Mobile Overlay */}
       {navOpen && (
-        <div className="fixed inset-0 bg-white/95 backdrop-blur-sm z-9 flex flex-col items-start justify-center gap-8 px-8 pointer-events-auto">
-          <a href="#" className="text-4xl font-medium text-black">
+        <div className="fixed inset-0 bg-white/95 backdrop-blur-sm z-9 flex flex-col items-start justify-center gap-8 px-8" role="navigation" aria-label="Mobile navigation menu">
+          <a href="#" className="text-4xl font-medium text-black focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1" onClick={handleNavLinkClick}>
             Labs
           </a>
-          <a href="#" className="text-4xl font-medium text-black">
+          <a href="#" className="text-4xl font-medium text-black focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1" onClick={handleNavLinkClick}>
             Studio
           </a>
-          <a href="#" className="text-4xl font-medium text-black">
+          <a href="#" className="text-4xl font-medium text-black focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1" onClick={handleNavLinkClick}>
             Openings
           </a>
-          <a href="#" className="text-4xl font-medium text-black">
+          <a href="#" className="text-4xl font-medium text-black focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1" onClick={handleNavLinkClick}>
             Shop
           </a>
-          <button className="text-4xl font-medium text-black underline underline-offset-2">
+          <button className="text-4xl font-medium text-black underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1" onClick={handleNavLinkClick}>
             Get in touch
           </button>
         </div>
       )}
 
-      {/* Hero Section */}
       <section
         className="relative h-screen w-full flex flex-col px-5 sm:px-8 md:px-10 overflow-hidden z-1"
         style={{
           justifyContent: 'flex-end',
           paddingBottom: 'clamp(3rem, 5vw, 12rem)',
         }}
+        role="main"
+        aria-label="Mainframe creative agency hero section"
       >
         <div className="max-w-xl relative z-10">
-          {/* Blurred Intro Label */}
           <div
             className="pointer-events-none select-none mb-5 sm:mb-6"
             style={{
@@ -203,12 +211,12 @@ const Mainframe: React.FC = () => {
               color: '#000',
               filter: 'blur(4px)',
             }}
+            aria-hidden="true"
           >
             <div>Hey there, meet A.R.I.A,</div>
             <div>Mainframe's Adaptive Response Interface Agent</div>
           </div>
 
-          {/* Typewriter Text */}
           <p
             style={{
               fontSize: 'clamp(18px, 4vw, 26px)',
@@ -220,10 +228,9 @@ const Mainframe: React.FC = () => {
             }}
           >
             {displayed}
-            {!done && <span className="typewriter-cursor" />}
+            {!done && <span className="typewriter-cursor" aria-hidden="true" />}
           </p>
 
-          {/* Action Pills */}
           <div
             className="flex flex-wrap gap-y-1"
             style={{
@@ -236,28 +243,37 @@ const Mainframe: React.FC = () => {
               (label) => (
                 <button
                   key={label}
-                  className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-xs sm:text-sm px-4 sm:px-5 py-px mx-px mb-1 whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+                  className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-xs sm:text-sm px-4 sm:px-5 py-px mx-px mb-1 whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black"
                   style={{
                     padding: 'clamp(0.3em, 1vw, 0.5em) clamp(1rem, 2vw, 1.25rem)',
                   }}
+                  aria-label={label}
                 >
                   {label}
                 </button>
-              }
+              )
             )}
 
-            {/* Email Pill */}
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center justify-center bg-transparent text-white border border-white rounded-full text-xs sm:text-sm px-4 sm:px-5 gap-2 sm:gap-3 mx-px mb-1 whitespace-nowrap hover:bg-white hover:text-black transition-colors duration-200"
+              className="inline-flex items-center justify-center bg-transparent text-white border border-white rounded-full text-xs sm:text-sm px-4 sm:px-5 gap-2 sm:gap-3 mx-px mb-1 whitespace-nowrap hover:bg-white hover:text-black transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white"
               style={{
                 padding: 'clamp(0.3em, 1vw, 0.5em) clamp(1rem, 2vw, 1.25rem)',
               }}
+              aria-label={copyFeedback ? 'Email copied to clipboard' : 'Copy email address'}
             >
               <span>
                 Reach us: <u>hello@mainframe.co</u>
               </span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
                 <rect x="3" y="3" width="7" height="7"></rect>
                 <rect x="14" y="3" width="7" height="7"></rect>
                 <rect x="14" y="14" width="7" height="7"></rect>
@@ -265,6 +281,12 @@ const Mainframe: React.FC = () => {
               </svg>
             </button>
           </div>
+
+          {copyFeedback && (
+            <div className="mt-4 text-sm text-white bg-black/50 rounded px-4 py-2" role="status" aria-live="polite">
+              ✓ Email copied to clipboard!
+            </div>
+          )}
         </div>
       </section>
     </div>
